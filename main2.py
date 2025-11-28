@@ -8,9 +8,11 @@ import pathlib
 from google import genai
 from google.genai import types
 import json
+from dotenv import load_dotenv
 
 # 🔐 Configuração da API Gemini
-os.environ["GOOGLE_API_KEY"] = "AIzaSyBWOMcssQFdCHNTx1MePoL19YNPYL53D8g"
+load_dotenv()
+os.environ["GOOGLE_API_KEY"] = os.getenv("GEMINI_KEY")
 gemini_client = genai.Client()
 
 # 🧭 Configuração do Selenium
@@ -53,7 +55,7 @@ def enviar_para_gemini(caminho_pdf):
     try:
         prompt = (
             "Extraia os seguintes dados deste edital de licitação e retorne em formato JSON:\n"
-            "Data do edital, número do edital, data de abertura das propostas, data de fechamento das propostas, órgão responsável, objeto da contratação, modalidade, prazo, itens principais."
+            "Data do edital, número do edital, data de abertura das propostas, data de fechamento das propostas, órgão responsável, objeto da contratação, modalidade, prazo, itens principais, valor unitário, valor máximo, quantidade, modo de disputa, quantidade, setor, cidade, estado."
             "As datas devem estar no formato de SQL completo com horário"
         )
         response = gemini_client.models.generate_content(
